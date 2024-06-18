@@ -15,3 +15,10 @@ import numpy as np
 from datetime import datetime
 
 
+#Establish MySQL connection
+db_connection = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='rootpass',
+    database='pms_system_bluewaters'
+)
