@@ -61,6 +61,16 @@ df_guest_bookings['is_new_booking'] = (df_guest_bookings['date'] - df_guest_book
 #New data frame with only the new bookings - not considering the the same guest stay in a few consecutive days
 df_guest_bookings_unique =df_guest_bookings[df_guest_bookings['is_new_booking']==True]
 
+#RFC calculation
+#recency - calculate the number of days since the last booking of each guest
+#frequency - calculate number of bookings for each guest
+#monetory - sum of total amount spent by the guest
+df_rfm = df_guest_bookings_unique.groupby('guest_id').agg({
+    'date': lambda x: (current_date - x.max()).days,
+    'booking_nu': 'count',
+    'net_amount': 'sum'
+}).rename(columns={'date': 'Recency','booking_nu':'Frequency','gross_amount':'monetory'})
+
 
 
 
