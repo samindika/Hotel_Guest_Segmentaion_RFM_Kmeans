@@ -46,8 +46,20 @@ df_guest_booking = df_guest_booking.dropna()
 df_guest_bookings = df_guest_booking.copy()
 df_guest_bookings['date'] = pd.to_datetime(df_guest_booking['date'])
 
+#Extract only the guest with type accomodation
+df_guest_bookings = df_guest_bookings[df_guest_bookings['type']=='Accommodation']
 
+#current date for Recency Calculation
+#current_date = datetime.today()
+my_date = datetime(2023, 12, 31)
+current_date = my_date
 
+# Identify consecutive days where the same guest stays
+df_guest_bookings['previous_date'] = df_guest_bookings.groupby('guest_id')['date'].shift(1)
+df_guest_bookings['is_new_booking'] = (df_guest_bookings['date'] - df_guest_bookings['previous_date']).dt.days != 1
+
+#New data frame with only the new bookings - not considering the the same guest stay in a few consecutive days
+df_guest_bookings_unique =df_guest_bookings[df_guest_bookings['is_new_booking']==True]
 
 
 
