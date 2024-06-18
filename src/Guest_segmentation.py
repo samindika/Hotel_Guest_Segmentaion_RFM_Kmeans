@@ -71,7 +71,8 @@ df_rfm = df_guest_bookings_unique.groupby('guest_id').agg({
     'net_amount': 'sum'
 }).rename(columns={'date': 'Recency','booking_nu':'Frequency','gross_amount':'monetory'})
 
-
+#copy of the df_rfm dataframe
+df_rfm_score = df_rfm.copy()
 
 
 
