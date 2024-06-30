@@ -13,6 +13,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
+from sklearn.cluster import KMeans
+import errors as err
+import sklearn.metrics as skmet
+from sklearn.preprocessing import MinMaxScaler
+
 
 
 #Establish MySQL connection
@@ -82,5 +87,17 @@ plt.ylabel('Frequency')
 plt.grid(True)
 plt.show()
 
+#Test number of clusters from 2-10
+for n in range(2, 10):
+     kmeans = KMeans(n_clusters=n)
+     kmeans.fit(df_rfm[['Recency','Frequency','net_amount']])
+     labels = kmeans.labels_
 
+     # extract the estimated cluster centres
+     cen = kmeans.cluster_centers_
+     # calculate the silhoutte score
+     print(n, skmet.silhouette_score(
+         df_rfm[['Recency','Frequency','net_amount']], labels))
+
+   
 
