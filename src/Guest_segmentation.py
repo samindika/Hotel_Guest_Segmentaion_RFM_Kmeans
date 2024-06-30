@@ -69,5 +69,18 @@ df_rfm = df_guest_bookings_unique.groupby('guest_id').agg({
     'date': lambda x: (current_date - x.max()).days,
     'booking_nu': 'count',
     'net_amount': 'sum'
-}).rename(columns={'date': 'Recency','booking_nu':'Frequency','gross_amount':'monetory'})
+}).rename(columns={'date': 'Recency','booking_nu':'Frequency','net_amount':'net_amount'})
+
+#Draw a scatter plot to show the rfm values of df_rfm dataframe
+#x-Recency, Y- Frequency , Size of the datapoint - Net amount
+#divide/1000 - make smaller numbers easier to read the graph
+plt.figure(figsize=(10, 6))
+scatter = plt.scatter(df_rfm['Recency'], df_rfm['Frequency'], s=df_rfm['net_amount'] / 1000, alpha=0.5)
+plt.title('Scatter Plot of Recency, Frequency, and Net Amount')
+plt.xlabel('Recency')
+plt.ylabel('Frequency')
+plt.grid(True)
+plt.show()
+
+
 
