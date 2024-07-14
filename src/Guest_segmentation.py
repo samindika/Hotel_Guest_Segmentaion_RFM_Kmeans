@@ -101,3 +101,13 @@ for n in range(2, 10):
 
    
 
+#Test k values from 1- 10
+k_values = [1,2,3,4,5,6,7,8,9,10] 
+#create a list to record wcss_error
+wcss_error =[]
+#Loop through k values
+for k in k_values:
+    model=KMeans(n_clusters=k)
+    model.fit(df_rfm[['Recency','Frequency','net_amount']])
+    wcss_error.append(model.inertia_)
+    
