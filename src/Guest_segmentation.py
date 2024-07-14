@@ -111,3 +111,7 @@ for k in k_values:
     model.fit(df_rfm[['Recency','Frequency','net_amount']])
     wcss_error.append(model.inertia_)
     
+#Plot Wcss error
+plt.plot(k_values,wcss_error)
+plt.ylabel('Wcss error')
+plt.xlabel('Number of Clusters (k)')
