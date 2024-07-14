@@ -115,3 +115,13 @@ for k in k_values:
 plt.plot(k_values,wcss_error)
 plt.ylabel('Wcss error')
 plt.xlabel('Number of Clusters (k)')
+
+
+#Step 03 - normalizing (Use standard scaler for normalizing)
+from sklearn.preprocessing import StandardScaler
+
+scaler_standard = StandardScaler()
+df_rfm_standard = scaler_standard.fit_transform(df_rfm[['Recency', 'Frequency', 'net_amount']])
+df_rfm_standard = pd.DataFrame(df_rfm_standard, columns=['Recency', 'Frequency', 'net_amount'])
+
+
