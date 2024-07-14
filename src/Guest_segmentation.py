@@ -124,4 +124,42 @@ scaler_standard = StandardScaler()
 df_rfm_standard = scaler_standard.fit_transform(df_rfm[['Recency', 'Frequency', 'net_amount']])
 df_rfm_standard = pd.DataFrame(df_rfm_standard, columns=['Recency', 'Frequency', 'net_amount'])
 
+#K-Means clustering
+k = 2
 
+df_rfm_standard['net_amount'] = np.where(df_rfm_standard['net_amount'] < 0, 0, df_rfm_standard['net_amount'])
+df_rfm_standard['net_amount'] = np.nan_to_num(df_rfm_standard['net_amount'])
+
+
+# Initialize KMeans object
+kmeans = KMeans(n_clusters=k, random_state=42)
+
+# Fit KMeans clustering model to the data 
+kmeans.fit(df_rfm_standard[['Recency', 'Frequency', 'net_amount']])
+
+# Get cluster labels
+labels = kmeans.labels_
+
+
+# Get cluster centers
+cen = kmeans.cluster_centers_
+
+
+# Add cluster labels to original DataFrame
+df_rfm_standard['Cluster'] = labels
+
+# Print the counts of customers in each cluster
+df_rfm_standard['Cluster'].value_counts()
+
+plt.figure(figsize=(12, 8))
+scatter = plt.scatter(df_rfm_standard['Recency'], df_rfm_standard['Frequency'], c=df_rfm_standard['Cluster'], 
+            s=df_rfm_standard['net_amount']*10, cmap='viridis', alpha=0.6, label='Customers')
+
+plt.scatter(cen[:, 0], cen[:, 1], s=200, c='red', label='Centroids', marker='D')
+
+plt.xlabel('Recency')
+plt.ylabel('Frequency')
+plt.title('K-means Clustering')
+plt.colorbar(scatter, label='Cluster')
+plt.legend()
+plt.show()
